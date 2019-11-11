@@ -3,6 +3,9 @@
 // Includes
 #include <Windows.h>
 
+// Class includes
+#include "d3dclass.h"
+
 // Globals
 const bool  FULL_SCREEN		= false;
 const bool  VSYNC_ENABLED	= true;
@@ -25,5 +28,6 @@ private:
 
 
 private:
+	D3DClass*	m_D3D;
 };
 
