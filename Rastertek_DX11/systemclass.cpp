@@ -152,7 +152,7 @@ void SystemClass::InitializeWindows(int & width, int & height)
 	m_hInstance = GetModuleHandle(NULL);
 
 	// give the application name
-	m_ApplicationName = L"Rastertek DX11";
+	m_ApplicationName = "Rastertek DX11";
 
 	// setup the window class with default settings
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;

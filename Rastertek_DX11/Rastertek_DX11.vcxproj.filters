@@ -10,6 +10,12 @@
     <Filter Include="Graphics">
       <UniqueIdentifier>{14c75787-b3c0-4341-a36e-444cf87760bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{2a15e35e-95f8-4398-81cd-ac174d9044d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{67c74a24-d9d7-43e7-a250-d9630a0f9056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -25,6 +31,15 @@
     <ClCompile Include="d3dclass.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="modelclass.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="colorshaderclass.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraclass.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -39,5 +54,22 @@
     <ClInclude Include="d3dclass.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="modelclass.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="colorshaderclass.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="cameraclass.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="color.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="color.ps">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
