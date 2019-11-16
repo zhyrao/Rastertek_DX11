@@ -40,6 +40,12 @@
     <ClCompile Include="cameraclass.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="textureshaderclass.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -63,12 +69,24 @@
     <ClInclude Include="cameraclass.h">
       <Filter>Camera</Filter>
     </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="textureshaderclass.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.vs">
+    <None Include="data\shader\color.ps">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="color.ps">
+    <None Include="data\shader\color.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="data\shader\texture.ps">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="data\shader\texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

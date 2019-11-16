@@ -8,6 +8,7 @@ GraphicsClass::GraphicsClass()
 	m_Camera = 0;
 	m_Model = 0;
 	m_ColorShader = 0;
+	m_TextureShader = 0;
 }
 
 
@@ -46,7 +47,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hWnd)
 		return false;
 
 	// init the model class
-	result = m_Model->Initialize(m_D3D->GetDevice());
+	result = m_Model->Initialize(m_D3D->GetDevice(), "data/texture/seafloor.dds");
 	if (!result)
 	{
 		MessageBox(hWnd, "Could not initialize the model object.", "Error", MB_OK);
@@ -66,21 +67,40 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hWnd)
 		return false;
 	}
 
-
+	// init texture shader
+	m_TextureShader = new TextureShaderClass;
+	if (!m_TextureShader)
+		return false;
+	
+	result = m_TextureShader->Initialize(m_D3D->GetDevice(), hWnd);
+	if (!result)
+	{
+		MessageBox(hWnd, "Could not initialize the texture shader object.", "Error", MB_OK);
+		return false;
+	}
 	return true;
 }
 
 void GraphicsClass::ShutDown()
 {
+	if (m_TextureShader)
+	{
+		m_TextureShader->ShutDown();
+		delete m_TextureShader;
+		m_TextureShader = 0;
+	}
+
 	if (m_ColorShader)
 	{
 		m_ColorShader->ShutDown();
+		delete m_ColorShader;
 		m_ColorShader = 0;
 	}
 
 	if (m_Model)
 	{
 		m_Model->ShutDown();
+		delete m_Model;
 		m_Model = 0;
 	}
 
@@ -129,8 +149,13 @@ bool GraphicsClass::Render()
 	// put the model vertex and index buffers on the graphics pipeline to prepare then for drawing
 	m_Model->Render(m_D3D->GetDeviceContext());
 
-	// render the model using the color shader
-	result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+// 	// render the model using the color shader
+// 	result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
+// 	if (!result)
+// 		return false;
+
+	// render with texture
+	result = m_TextureShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_Model->GetTextureSRV());
 	if (!result)
 		return false;
 

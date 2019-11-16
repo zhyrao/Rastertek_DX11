@@ -1,0 +1,15 @@
+// pixel input type
+struct PixelInputType
+{
+	float4 Position: SV_POSITION;
+	float2 texCoord: TEXCOORD0;
+};
+
+
+Texture2D simpleTexture;
+SamplerState simpleSampler;
+
+float4 TexturePixelShader(PixelInputType input) : SV_TARGET
+{
+	return simpleTexture.Sample(simpleSampler, input.texCoord);
+}

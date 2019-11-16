@@ -6,6 +6,8 @@ ModelClass::ModelClass()
 {
 	m_VertexBuffer = 0;
 	m_IndexBuffer = 0;
+
+	m_Texture = 0;
 }
 
 ModelClass::ModelClass(const ModelClass& other)
@@ -16,11 +18,16 @@ ModelClass::~ModelClass()
 {
 }
 
-bool ModelClass::Initialize(ID3D11Device * device)
+bool ModelClass::Initialize(ID3D11Device * device, LPCSTR textureFile)
 {
 	bool result;
 
 	result = InitializeBuffers(device);
+	if (!result)
+		return false;
+
+	// load texture
+	result = LoadTexture(device, textureFile);
 	if (!result)
 		return false;
 
@@ -30,6 +37,7 @@ bool ModelClass::Initialize(ID3D11Device * device)
 void ModelClass::ShutDown()
 {
 	ShutDownBuffers();
+	ReleaseTexture();
 }
 
 void ModelClass::Render(ID3D11DeviceContext * deviceContext)
@@ -49,10 +57,10 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 
 	HRESULT result;
 	// set the number of vertices in the vertex array
-	m_VertexCount = 3;
+	m_VertexCount = 4;
 
 	// set the number of indices
-	m_IndexCount = 3;
+	m_IndexCount = 6;
 
 	// create the vertex array
 	vertices = new VertexType[m_VertexCount];
@@ -66,18 +74,25 @@ bool ModelClass::InitializeBuffers(ID3D11Device * device)
 
 	// load the vertex data array
 	vertices[0].position = D3DXVECTOR3(-1.0f, -1.0f, 0.0f);  // Bottom left.
-	vertices[0].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[0].texCoord = D3DXVECTOR2(0.0f, 1.0f);
 
-	vertices[1].position = D3DXVECTOR3(0.0f, 1.0f, 0.0f);  // Top middle.
-	vertices[1].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[1].position = D3DXVECTOR3(-1.0f, 1.0f, 0.0f);  // Top left.
+	vertices[1].texCoord = D3DXVECTOR2(0.0f, 0.0f);
 
 	vertices[2].position = D3DXVECTOR3(1.0f, -1.0f, 0.0f);  // Bottom right.
-	vertices[2].color = D3DXVECTOR4(0.0f, 1.0f, 0.0f, 1.0f);
+	vertices[2].texCoord = D3DXVECTOR2(1.0f, 1.0f);
+
+	vertices[3].position = D3DXVECTOR3(1.0f, 1.0f, 0.0f);  // Top right.
+	vertices[3].texCoord = D3DXVECTOR2(1.0f, 0.0f);
 
 	// Load the index array with data.
 	indices[0] = 0;  // Bottom left.
-	indices[1] = 1;  // Top middle.
-	indices[2] = 2;  // Bottom right.
+	indices[1] = 1;  // Top left.
+	indices[2] = 3;  // Bottom right.
+
+	indices[3] = 0;  // Bottom left.
+	indices[4] = 3;  // Top middle.
+	indices[5] = 2;  // Bottom right.
 
 	// set up the description
 	vertexbufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -157,4 +172,31 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext * deviceContext)
 
 	// set the type of primitive topology
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+bool ModelClass::LoadTexture(ID3D11Device * device, LPCSTR file)
+{
+	bool result;
+
+	// create texture object
+	m_Texture = new TextureClass;
+	if (!m_Texture)
+		return false;
+
+	// initialize the texture
+	result = m_Texture->Initialize(device, file);
+	if (!result)
+		return false;
+
+	return true;
+}
+
+void ModelClass::ReleaseTexture()
+{
+	if (m_Texture)
+	{
+		m_Texture->ShutDown();
+		delete m_Texture;
+		m_Texture = 0;
+	}
 }
